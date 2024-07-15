@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_name">Name:</label><br>
+        <input type="text" id="id_name" name="name"><br><br>
+        
+        <label for="id_username">Username:</label><br>
+        <input type="text" id="id_username" name="username"><br><br>
+        
+        <label for="id_email">Email:</label><br>
+        <input type="email" id="id_email" name="email"><br><br>
+        
+        <label for="id_password1">Password:</label><br>
+        <input type="password" id="id_password1" name="password1"><br><br>
+        
+        <label for="id_password2">Confirm Password:</label><br>
+        <input type="password" id="id_password2" name="password2"><br>
+        {% if form.errors.password2 %}
+            <span style="color: red;">{{ form.errors.password2 }}</span><br><br>
+        {% endif %}
+        
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

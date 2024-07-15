@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show me your data</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+    
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        th {
+            background-color: #f2f2f2;
+        }
+    
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<h1>Table name  : {{db.user_email}}</h1>
+
+<table border="1px">
+    <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Password</td>
+        <td>Delete</td>
+        <td>Edit</td>
+    </tr>
+    {% for i in db %}
+    <tr>
+        </tr><td>{{i.name}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.password}}</td>
+        <td><a href="del/{{i.id}}">Delete</a></td>
+        <td><a href="edit/{{i.id}}">Edit</a></td>
+        <!-- del/{{i.id}} associated id to href to know which id to delete -->
+    </tr>
+
+    {% endfor %}
+</table>
+</body>
+</html>

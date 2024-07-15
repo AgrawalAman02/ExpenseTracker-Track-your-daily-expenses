@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Profile</h1>
+        <form action="../../upd/{{ u.email }}/" method="post">
+            {% csrf_token %}
+            <label for="new_name">Name:</label>
+            <input type="text" id="new_name" name="new_name" value="{{ u.name }}" required><br>
+
+            <label for="new_email">Email:</label>
+            <input type="email" id="new_email" name="new_email" value="{{ u.email }}" required><br>
+
+            <label for="new_pass">Password</label>
+            <input type="password" id="new_pass" name="new_pass" value="{{ u.password }}" required><br>
+
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+</body>
+</html>

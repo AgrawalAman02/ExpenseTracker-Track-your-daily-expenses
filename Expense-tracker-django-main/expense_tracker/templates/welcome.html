@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"  />
+    <title>Expense Tracker</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f2f2f2;
+        }
+
+        #change_form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            text-align: center;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none; 
+        }
+        #change_form #closeBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="submit"] {
+            width: 75%;
+            padding:10px 10px 5px 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .edit_btn
+        {
+            padding: 10px;
+            border: none;
+            background-color: burlywood;
+
+        }
+
+        .delete_btn
+        {
+            background-color: red;
+            padding: 10px;
+            border: none;
+            color: white;
+        }
+
+        .changeform
+        {
+            z-index: 9999;
+        }
+       
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            width:max-content /* Adjust the header width */
+          }
+      
+          /* Style for logout and edit profile links */
+          .user-actions {
+            display: flex;
+            gap: 10px; /* Adjust spacing between links */
+            position: absolute;
+            top: 0;
+            right: 0;
+          }
+          
+      
+          .logout-link {
+            color: #000;
+            text-decoration: none;
+            border: 0.5px solid #000;
+            padding: 5px 10px;
+            border-radius: 5px;
+          }
+      
+          .edit-profile-link {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+          }
+          .user-actions a {
+            text-decoration: none;
+        }
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 5px;
+            /* Add your avatar image URL here */
+            background-image: url('https://img.freepik.com/free-vector/mysterious-mafia-man-smoking-cigarette_52683-34828.jpg?w=740&t=st=1714133769~exp=1714134369~hmac=8c997fc2feaf65c0a294e2d578155eec51c392b2c8fe2721a2b1ce17fe994e09');
+            background-size: cover;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="user-actions">
+            <a href="login" class="logout-link">Logout</a>
+            <a href="edit_profile/{{ u.email }}" class="edit-profile-link">
+                <span class="avatar"></span>
+            </a>
+            </a>
+            <div style="clear: both;"></div>
+        </div>
+    </header>
+
+    <div class="container">
+    <h1>Welcome, {{u.name}}!</h1>
+    <form action="../addTransaction" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="email" value="{{u.email}}">
+        <input type="text" name="expense_name" placeholder="Enter expense description" required><br>
+        <input type="number" name="amount" placeholder="Enter amount"><br>
+        <input type="submit" value="Add Expense">
+    </form>
+</div>
+
+
+<div class="show">
+    <h2>Your Expenses</h2>
+
+  
+
+    <table border="1">
+        <tr>
+            <th>Last Modified</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Modify</th>
+        </tr>
+
+        {% for i in expense %}
+
+        <div id="change_form" style="display: none;">
+            <h1>Edit it</h1>
+            <form action="edit" method="POST">
+                {% csrf_token %}
+                <i id="closeBtn" class="fa-solid fa-square-xmark"></i>
+                <input type="hidden" name="email" value="{{u.email}}">
+                <input type="hidden" name="id" value="{{i.id}}">
+                <input type="text" name="description" placeholder="Enter expense description" required><br>
+                <input type="number" name="amount" placeholder="Enter amount"><br>
+              <input type="submit"  value="Save changes">
+            </form>
+        </div>
+
+        <tr>
+            <td>{{ i.date }}</td>
+            <td>
+                <p id="description{{i.id}}">{{i.expense_name}}</p> 
+            </td>
+            <td>
+                <p  id="amountInput{{i.id}}">{{i.amount}}</p> 
+            </td>
+            
+        </div>
+            <td>
+                <input type="text" name="id" value="{{i.id}}" hidden>
+                <button onclick="enableEdit({{i.id}})" class="edit_btn"><i class="fa-regular fa-edit"></i></button>
+                <a href="/../del/{{i.id}}">
+                    <button type="button" name="delete_btn" class="delete_btn"><i class="fa-regular fa-trash-can"></i></button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="total"><h3>Total Expense {{total}} </h3></div>
+
+  
+
+<script>
+function enableEdit(id) {
+    // Get the parent element of the button, which is the table row
+   
+    var changeForm = document.getElementById('change_form');
+    
+    // Set its display property to 'block'
+    changeForm.style.display = 'block';
+    
+    // Optionally, you can populate the input fields izn the form with data from the selected row
+    var description = document.getElementById('description' + id).textContent;
+    var amount = document.getElementById('amountInput' + id).textContent;
+
+    // var description = getElementById('amountInput' + id).value
+    
+    changeForm.querySelector('input[name="description"]').value = description;
+    changeForm.querySelector('input[name="amount"]').value = amount;
+}
+
+function closeForm() {
+    var changeForm = document.getElementById('change_form');
+    changeForm.style.display = 'none';
+}
+
+
+// Add event listener to the close button
+document.getElementById('closeBtn').addEventListener('click', closeForm);
+
+</script>
