@@ -2,7 +2,7 @@
 
   - This is a very basic project on django
   - where one can register / login / logout /add expenses etc
-  -  we've made this project in a hurry for our Value Added Training Submission
+  -  We've made this project for our Value Added Training Submission
   -  Maybe in futute we'll improve it further with more features
 
 ### These are the advancements i'll make in future
